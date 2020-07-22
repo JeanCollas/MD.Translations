@@ -9,7 +9,7 @@ namespace MD.Translations.Abstractions
     {
         public static void InitTranslations(this IServiceCollection services)
         {
-            services.AddScoped<TranslationService>();
+            services.AddScoped<ITranslationService, TranslationService>();
         }
 
     }

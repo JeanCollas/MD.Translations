@@ -7,19 +7,25 @@ using System.Threading.Tasks;
 
 namespace MD.Translations
 {
-    public class TranslationService
+    public class TranslationService : ITranslationService
     {
         private readonly ISupportedLangsService _SupportedLangsService;
-        private readonly IEnumerable<ITranslationService> _Translators;
+        private readonly IEnumerable<ILangTranslationService> _Translators;
 
         public TranslationService(
             ISupportedLangsService supportedLangsService,
-            IEnumerable<ITranslationService> translators)
+            IEnumerable<ILangTranslationService> translators)
         {
             _SupportedLangsService = supportedLangsService;
             _Translators = translators;
         }
 
+        /// <summary>
+        /// Translate the requested texts
+        /// </summary>
+        /// <returns>true if a the translation has been done or is not required</returns>
+        public Task<bool> TranslateAsync(Dictionary<string, string> texts, string lang, string context, string area)
+            => TranslateAsync(texts, lang, context, area);
         /// <summary>
         /// Translate the requested texts
         /// </summary>

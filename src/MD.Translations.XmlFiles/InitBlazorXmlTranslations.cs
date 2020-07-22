@@ -1,5 +1,5 @@
 ﻿using MD.Translations.Abstractions;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+//using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -66,9 +66,8 @@ namespace MD.Translations
                 services.AddSingleton(conf);
             }
 
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddMemoryCache();
-            services.AddScoped<ILangTranslationService, XmlTranslationService>();
+            //services.AddMemoryCache();
+            services.AddScoped<ILangTranslationService, BlazorXmlTranslationService>();
             //services.AddSingleton<XmlTranslationIOService, XmlTranslationIOService>();
         }
     }

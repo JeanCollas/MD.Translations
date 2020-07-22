@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
@@ -12,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace MD.Translations
 {
-    public class XmlTranslationService : ILangTranslationService
+    public class BlazorXmlTranslationService : ILangTranslationService
     {
         //    //            if (context == null && req != null) context = $"[{req.Method}] {req.Path}";
         //    //            context = context ?? "none";
@@ -21,20 +20,16 @@ namespace MD.Translations
 
         private readonly IEnumerable<XmlTranslationsConfig> _Configs;
         private readonly IMemoryCache _Cache;
-        private readonly IActionContextAccessor _ActionContextAccessor;
-        private readonly ILogger<XmlTranslationService> _Logger;
+        private readonly ILogger<BlazorXmlTranslationService> _Logger;
 
-        public XmlTranslationService(
+        public BlazorXmlTranslationService(
             IEnumerable<XmlTranslationsConfig> configs,
             IMemoryCache cache,
-            IActionContextAccessor actionContextAccessor,
-            ILogger<XmlTranslationService> logger
+            ILogger<BlazorXmlTranslationService> logger
             )
         {
             _Configs = configs;
-            _Cache = cache;
-            _ActionContextAccessor = actionContextAccessor;
-            _Logger = logger;
+            _Cache = cache;            _Logger = logger;
         }
 
         #region In-memory cache storage for translations
@@ -249,8 +244,9 @@ namespace MD.Translations
                 }
 
                 // if some changed happened, save the request origin
-                var infos = GetRouteInfo();
-                contextNode.MissingInfo.Add($"[{infos.Method}] {infos.RouteTemplate} {infos.RouteName} {infos.RequestUrl}");
+                //var infos = GetRouteInfo();
+                //contextNode.MissingInfo.Add($"[{infos.Method}] {infos.RouteTemplate} {infos.RouteName} {infos.RequestUrl}");
+                contextNode.MissingInfo.Add($"[{area}] {context}");
 
                 // Keep log size reasonable
                 if (contextNode.MissingInfo.Count > 150)
@@ -260,44 +256,44 @@ namespace MD.Translations
             }
         }
 
-        /// <summary>
-        /// Get route information from context
-        /// </summary>
-        (string Method, string RouteTemplate, string RouteName, string RequestUrl) GetRouteInfo()
-        {
-            var actionContext = _ActionContextAccessor.ActionContext;
-            string method = null;
-            string url = null;
-            try
-            {
-                method = actionContext.HttpContext?.Request?.Method;
-            }
-            catch { }
-            try
-            {
-                url = _ActionContextAccessor.ActionContext?.HttpContext?.Request?.GetAbsoluteUri().ToString();
-            }
-            catch { }
-            try
-            {
-                var routeTemplate = _ActionContextAccessor.ActionContext?.ActionDescriptor?.AttributeRouteInfo?.Template;
-                var routeName = _ActionContextAccessor.ActionContext?.ActionDescriptor?.AttributeRouteInfo?.Name;
-                return (method, routeTemplate, routeName, url);
-            }
-            catch
-            {
-                try
-                {
-                    var path = actionContext.HttpContext?.Request?.Path;
-                    return (method, path, path, url);
-                }
-                catch
-                {
-                    // Should never happen
-                    return (null, "failed to retreive route data", null, url);
-                }
-            }
-        }
+        ///// <summary>
+        ///// Get route information from context
+        ///// </summary>
+        //(string Method, string RouteTemplate, string RouteName, string RequestUrl) GetRouteInfo()
+        //{
+        //    var actionContext = _ActionContextAccessor.ActionContext;
+        //    string method = null;
+        //    string url = null;
+        //    try
+        //    {
+        //        method = actionContext.HttpContext?.Request?.Method;
+        //    }
+        //    catch { }
+        //    try
+        //    {
+        //        url = _ActionContextAccessor.ActionContext?.HttpContext?.Request?.GetAbsoluteUri().ToString();
+        //    }
+        //    catch { }
+        //    try
+        //    {
+        //        var routeTemplate = _ActionContextAccessor.ActionContext?.ActionDescriptor?.AttributeRouteInfo?.Template;
+        //        var routeName = _ActionContextAccessor.ActionContext?.ActionDescriptor?.AttributeRouteInfo?.Name;
+        //        return (method, routeTemplate, routeName, url);
+        //    }
+        //    catch
+        //    {
+        //        try
+        //        {
+        //            var path = actionContext.HttpContext?.Request?.Path;
+        //            return (method, path, path, url);
+        //        }
+        //        catch
+        //        {
+        //            // Should never happen
+        //            return (null, "failed to retreive route data", null, url);
+        //        }
+        //    }
+        //}
 
         #endregion Missing translations handling
 

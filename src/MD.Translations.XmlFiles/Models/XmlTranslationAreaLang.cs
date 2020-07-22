@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -57,7 +56,7 @@ namespace MD.Translations
 
         /// <summary>Helper to extract all missings from an area</summary>
         [XmlIgnore]
-        [JsonIgnore]
+        //[JsonIgnore]
         public Dictionary<string, XmlTranslationAreaContext> Missing
         {
             get
