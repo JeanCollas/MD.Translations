@@ -34,7 +34,7 @@ namespace MD.Translations
 
         /// <summary>
         /// Initialize Xml Translations
-        /// 
+        ///
         /// Using this service requires to register
         ///   IActionContextAccessor service
         ///   ISupportedLangsService service
@@ -45,7 +45,7 @@ namespace MD.Translations
 
         /// <summary>
         /// Initialize Xml Translations
-        /// 
+        ///
         /// Using this service requires to register
         ///   ISupportedLangsService service
         /// </summary>
@@ -66,9 +66,10 @@ namespace MD.Translations
                 services.AddSingleton(conf);
             }
 
+            //services.AddActionContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddMemoryCache();
-            services.AddScoped<ILangTranslationService, XmlTranslationService>();
+            services.AddSingleton<ILangTranslationService, XmlTranslationService>();
             //services.AddSingleton<XmlTranslationIOService, XmlTranslationIOService>();
         }
     }

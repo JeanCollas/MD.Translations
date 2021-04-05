@@ -65,7 +65,7 @@ namespace MD.Translations
         #region ITranslationService implementation
 
         //static string[] _HandledLangs = new[] { "es", "it", "de", "nl", "ru", "pl", "pt" };
-        public bool CanTranslate(string lang, string area, string context = null) => _Configs.Any(l=>l.Langs.Contains(lang)) || lang == "zz"; //_HandledLangs.Contains(lang) 
+        public bool CanTranslate(string lang, string area, string context = null) => _Configs.Any(l => l.Langs.Contains(lang)) || lang == "zz"; //_HandledLangs.Contains(lang)
 
         public async Task<string> GetTranslationAsync(string key, string lang,
                                                 string area = null, string context = null,
@@ -192,7 +192,7 @@ namespace MD.Translations
                 if (paths.Count() > 0) paths.RemoveAt(paths.Count - 1);
                 paths = paths.Select(p => p.ReplaceDiacritics().RemoveNonAlphaNumChar()).Where(a => !a.IsNullOrEmpty()).ToList();
                 var area2 = String.Join("_", paths.Take(2));
-                if(area2.Length>0)
+                if (area2.Length > 0)
                     fileName += $".{area2}";
             }
             fileName += $".{lang}.xml";
@@ -206,7 +206,7 @@ namespace MD.Translations
             var (missingFolder, fileName) = GetMissingFile(lang, area, context);
             var missingFile = Path.Combine(missingFolder, fileName);
 
-            // Build a translation root object. 
+            // Build a translation root object.
             //   If the file exists, load it
             //   Otherwise create it
             XmlTranslationRoot root;
@@ -303,7 +303,7 @@ namespace MD.Translations
 
         /// <summary>
         /// zz lang will always generate a translation missing file
-        ///   to ensure that it is 
+        ///   to ensure that it is
         /// </summary>
         private async Task GetTranslationsZZAsync(Dictionary<string, string> texts, string lang, string area, string context)
         {
